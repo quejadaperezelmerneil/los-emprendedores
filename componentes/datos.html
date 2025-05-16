@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Datos de Energía | Ecovibe</title>
+  <link rel="stylesheet" href="/ecovibe_website 1.0.1/estilos/datos.css"/>
+  <link rel="icon" type="image/png" href="../img/favicon.png">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="../img/logo.png" alt="Ecovibe Logo" class="logo-img">
+    </div>
+    <nav>
+      <ul class="menu">
+        <li><a href="index.html">Inicio</a></li>
+        <li class="submenu-parent">
+          <a href="sobre nosotros.html">Sobre Nosotros</a> 
+          <ul class="submenu"> 
+            <li><a href="sobre nosotros.html">Misión</a></li>
+            <li><a href="sobre nosotros.html">Visión</a></li>
+            <li><a href="sobre nosotros.html">Equipo</a></li>
+          </ul>
+        </li>
+        <li class="submenu-parent">
+          <a href="index.html">Energías</a>
+          <ul class="submenu">
+            <li><a href="index.html">Solar</a></li>
+            <li><a href="index.html">Eólica</a></li>
+            <li><a href="#index.html">Hidráulica</a></li>
+          </ul>
+        </li>
+        <li class="submenu-parent">
+          <a href="/ecovibe_website 1.0.1/componentes/formulario.html">Contacto</a>
+          <ul class="submenu">
+            <li><a href="#">Email</a></li>
+            <li><a href="#">Telefono</a></li>
+            <li><a href="#">Chat</a></li>
+          </ul>
+        </li>
+        <li class="submenu-parent">
+          <a href="#">Calcula tu huella de carbono</a>
+        </li>
+    </nav>
+  </header>
+
+  <h1 style="text-align:center;">Calculadora de Energía Eléctrica</h1>
+
+ <form id="formularioEnergia">
+  <label for="consumo">Consumo mensual (kWh):</label>
+  <input type="number" name="consumo" step="any" required />
+  <button type="submit">Calcular energía renovable</button>
+</form>
+
+<div id="resultadoCalculo"></div>
+
+  <h2>Datos Históricos de Generación Eléctrica en Colombia (GWh)</h2>
+
+  <button id="descargarBtn">Descargar CSV</button>
+
+  <table id="tablaDatos">
+    <thead id="tablaHead"></thead>
+    <tbody id="tablaBody"></tbody>
+  </table>
+
+  <canvas id="graficoEnergia" style="max-width: 1000px; margin: auto; display: block;"></canvas>
+
+  <footer>
+    <p>© 2025 Ecovibe | Todos los derechos reservados</p>
+  </footer>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // CALCULADORA DE RENOVABLES
+    const form = document.getElementById("formularioEnergia");
+    const resultado = document.getElementById("resultadoCalculo");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const consumo = parseFloat(form.querySelector("input[name='consumo']").value);
+      const porcentajeRenovable = 0.71; // Aproximadamente 71% es renovable en Colombia
+
+      if (!isNaN(consumo)) {
+        const energiaRenovable = consumo * porcentajeRenovable;
+        resultado.innerHTML = `
+          <p>De un consumo mensual de <strong>${consumo} kWh</strong>,</p>
+          <p>aproximadamente <strong>${energiaRenovable.toFixed(2)} kWh</strong> el 60% provienen de fuentes renovables (hidráulica, solar, eólica).</p>
+        `;
+      } else {
+        resultado.textContent = "Por favor, ingresa un valor válido.";
+      }
+    });
+
+      // DATOS HISTÓRICOS
+      const datosHistoricos = [
+        { Año: 2019, Hidráulica: 46870, Térmica: 22450, Solar: 23, Eólica: 4, Total: 69347 },
+        { Año: 2020, Hidráulica: 47010, Térmica: 21060, Solar: 87, Eólica: 12, Total: 68169 },
+        { Año: 2021, Hidráulica: 46500, Térmica: 23100, Solar: 135, Eólica: 22, Total: 69757 },
+        { Año: 2022, Hidráulica: 45000, Térmica: 24900, Solar: 210, Eólica: 39, Total: 70149 },
+        { Año: 2023, Hidráulica: 47230, Térmica: 22500, Solar: 310, Eólica: 66, Total: 70106 }
+      ];
+
+      // Tabla
+      const tablaHead = document.getElementById("tablaHead");
+      const tablaBody = document.getElementById("tablaBody");
+      const headers = Object.keys(datosHistoricos[0]);
+      const headRow = document.createElement("tr");
+
+      headers.forEach(header => {
+        const th = document.createElement("th");
+        th.textContent = header;
+        headRow.appendChild(th);
+      });
+      tablaHead.appendChild(headRow);
+
+      datosHistoricos.forEach(fila => {
+        const tr = document.createElement("tr");
+        headers.forEach(header => {
+          const td = document.createElement("td");
+          td.textContent = fila[header];
+          tr.appendChild(td);
+        });
+        tablaBody.appendChild(tr);
+      });
+
+      // Gráfico
+      const ctx = document.getElementById("graficoEnergia").getContext("2d");
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: datosHistoricos.map(d => d.Año),
+          datasets: [
+            {
+              label: 'Hidráulica',
+              data: datosHistoricos.map(d => d.Hidráulica),
+              borderColor: '#1565C0',
+              backgroundColor: 'rgba(21, 101, 192, 0.2)',
+              tension: 0.3,
+              fill: true
+            },
+            {
+              label: 'Térmica',
+              data: datosHistoricos.map(d => d.Térmica),
+              borderColor: '#FF8F00',
+              backgroundColor: 'rgba(255, 143, 0, 0.2)',
+              tension: 0.3,
+              fill: true
+            },
+            {
+              label: 'Solar',
+              data: datosHistoricos.map(d => d.Solar),
+              borderColor: '#FBC02D',
+              backgroundColor: 'rgba(251, 192, 45, 0.2)',
+              tension: 0.3,
+              fill: true
+            },
+            {
+              label: 'Eólica',
+              data: datosHistoricos.map(d => d.Eólica),
+              borderColor: '#00ACC1',
+              backgroundColor: 'rgba(0, 172, 193, 0.2)',
+              tension: 0.3,
+              fill: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Generación de Energía por Fuente (2019 - 2023)',
+              font: {
+                size: 18
+              }
+            },
+            legend: {
+              position: 'top'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'GWh'
+              }
+            }
+          }
+        }
+      });
+
+      // Gráfico pastel matriz renovable
+      const ctxPie = document.getElementById('renewableChart').getContext('2d');
+      new Chart(ctxPie, {
+        type: 'doughnut',
+        data: {
+          labels: ['Hidráulica', 'Solar', 'Eólica', 'Otras fuentes'],
+          datasets: [{
+            label: 'kWh',
+            data: [189, 6, 3, 15],
+            backgroundColor: [
+              '#3498db', // azul hidráulica
+              '#f1c40f', // amarillo solar
+              '#2ecc71', // verde eólica
+              '#9b59b6'  // morado otras
+            ],
+            borderColor: '#fff',
+            borderWidth: 2,
+            hoverOffset: 20
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                font: {
+                  size: 14
+                }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.parsed || 0;
+                  return `${label}: ${value} kWh`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+
+      // Botón de descarga CSV
+      document.getElementById("descargarBtn").addEventListener("click", function () {
+        const rows = [headers.join(",")];
+        datosHistoricos.forEach(fila => {
+          const valores = headers.map(h => fila[h]);
+          rows.push(valores.join(","));
+        });
+        const csvContent = rows.join("\n");
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        link.setAttribute("href", URL.createObjectURL(blob));
+        link.setAttribute("download", "datos_generacion_colombia.csv");
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    });
+  </script>
+</body>
+</html>
+

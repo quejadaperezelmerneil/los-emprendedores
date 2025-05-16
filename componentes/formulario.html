@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro y login</title>
+    <link rel="icon" type="image/png" href="../img/favicon.png">
+</head>
+<body>
+    <header class="header">
+    <div class="logo">
+    <img src="../img/logo.png" alt="Ecovibe Logo" class="logo-img">
+    </div>
+    <nav>
+    <ul class="menu">
+        <li><a href="index.html">Inicio</a></li>
+        <li class="submenu-parent">
+        <a href="#">Sobre Nosotros</a> 
+        <ul class="submenu"> 
+            <li><a href="sobre nosotros.html">Misión</a></li>
+            <li><a href="sobre nosotros.html">Visión</a></li>
+            <li><a href="sobre nosotros.html">Equipo</a></li>
+        </ul>
+        </li>
+        <li class="submenu-parent">
+        <a href="index.html">Energías</a>
+        <ul class="submenu">
+            <li><a href="index.html">Solar</a></li>
+            <li><a href="index.html">Eólica</a></li>
+            <li><a href="#index.html">Hidráulica</a></li>
+        </ul>
+        </li>
+        <li class="submenu-parent">
+        <a href="datos.html">Calcula tu huella de carbono</a>
+        </li>
+    </nav>
+    </header>
+
+    <main class="main-content">
+    <div class="container">
+
+        <h2>Registro</h2>
+
+    <form id="registerForm">
+        
+        <input type="text" id="registerName" placeholder="Nombre de usuario" required />
+        <input type="email" id="registerEmail" placeholder="Correo electrónico" required />
+        <input type="password" id="registerPassword" placeholder="Contraseña" required />
+        <br>
+
+        <button type="submit">Registrarse</button>
+    </form>
+
+    <h2>login</h2>
+
+    <form id="loginForm">
+        
+        <input type="email" id="loginEmail" placeholder="Correo electronico" required />
+        <input type="password" id="loginPassword" placeholder="Contraseña" required />
+        <br>
+        
+
+        <button type="submit">Iniciar sesion</button>
+    </form>
+    </main>
+
+    <footer>
+    <p>© 2025 Ecovibe | Todos los derechos reservados</p>
+  </footer>
+
+    <style>
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+font-family: sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-image: url('../img/fhuelladc.png');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 70px; /* para que no se esconda debajo del header fijo */
+}
+
+
+.header {
+background-color: #1565C0;
+color: white;
+display: flex;
+justify-content: space-between;
+width: 100%;
+padding: 0 20px;
+align-items: center;
+height: 70px;
+box-sizing: border-box;
+position: fixed;
+}
+
+.logo {
+font-size: 1.5rem;
+font-weight: bold;
+}
+
+.menu {
+list-style: none;
+display: flex;
+gap: 2.5rem;
+}
+
+.menu a {
+color: white;
+text-decoration: none;
+font-weight: 500;
+}
+.menu li a {
+color: white;
+text-decoration: none;
+font-weight: 500;
+padding: 10px 15px;
+display: inline-block;
+transition: transform 0.2s ease, box-shadow 0.2s ease;
+border-radius: 6px;
+}
+.menu li a:hover {
+transform: translateY(2px); 
+box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3); 
+background-color: rgba(255, 255, 255, 0.15);
+}
+
+.submenu-parent {
+position: relative;
+}
+
+.submenu {
+position: absolute;
+top: 100%;
+left: 0;
+background-color: #1565C0;
+display: none;
+list-style: none;
+padding: 0.5rem 0;
+margin: 0;
+border-radius: 6px;
+z-index: 999;
+}
+
+.submenu li {
+padding: 0;
+}
+
+.submenu li a {
+display: block;
+padding: 0.5rem 1rem;
+color: white;
+text-decoration: none;
+white-space: nowrap;
+}
+
+.submenu li a:hover {
+background-color: #0d47a1;
+}
+
+.submenu-parent:hover .submenu {
+display: block;
+}
+
+.logo-img {
+height: 170px;
+width: auto;
+}
+
+h2 {
+font-size: 30px;
+text-align: center;
+color: black;
+}
+
+form {
+display: flex;
+flex-direction: column;
+margin-bottom: 20px;
+}
+
+.container {
+background-color: white;
+padding: 40px 30px;
+border-radius: 10px;
+box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+width: 100%;
+max-width: 400px;
+text-align: center;
+}
+
+input {
+width: 100%;
+padding: 12px 15px;
+margin: 10px 0;
+border: 1px solid #ccc;
+font-size: 16px;
+border-radius: 5px;
+}
+
+button {
+width: 100%;
+padding: 12px;
+margin-top: 10px;
+background-color: #2E7D32;
+font-size: 22px;
+color: white;
+border-radius: 5px;
+font-size: 16px;
+cursor: pointer;
+transition background-color:0.3s ease;
+}
+
+button :hover {
+background-color:#326d89;
+}
+
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #2E7D32;
+    color: white;
+}
+
+</style>
+
+   <div id="welcomeMessage"></div>
+</div>
+<script>
+document.getElementById("registerForm").addEventListener("submit", 
+    function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById("registerName").value;
+        const email = document.getElementById("registerEmail").value;
+        const password = document.getElementById("registerPassword").value;
+
+        const user = {name, email, password};
+        localStorage.setItem(email, JSON.stringify(user));
+
+        alert("Usuario registrado correctamente!");
+        this.reset(); 
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", function
+        (e){
+        e.preventDefault();
+
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        const userData = localStorage.getItem(email);
+        
+        if(!userData) {
+            alert("El usuario no existe!");
+            return;
+        }
+    
+
+        const user = JSON.parse(userData);
+
+        if (user.password === password){
+            document.getElementById("welcomeMessage").textContent =
+            `Bienvenido, ${user.name}`;
+        } else{
+            alert("contraseña incorrecta!");
+        }
+        
+        this.reset();
+    });
+</script>
+</body>
+</html>
